@@ -28,7 +28,7 @@
                                 <input 
                                     class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="nombre"
-                                    name="nombre"
+                                    name="name"
                                     type="text"
                                     placeholder="Nombre Cliente"
                                 />
@@ -49,7 +49,7 @@
                                 <input 
                                     class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="telefono"
-                                    name="telefono"
+                                    name="phone"
                                     type="tel"
                                     placeholder="Teléfono Cliente"
                                 />
@@ -60,7 +60,7 @@
                                 <input 
                                     class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="empresa"
-                                    name="empresa"
+                                    name="company"
                                     type="text"
                                     placeholder="Empresa Cliente"
                                 />
@@ -68,8 +68,10 @@
 
                             <input
                                 type="submit"
+                                name="action"
                                 class="bg-teal-600 hover:bg-teal-900 w-full mt-5 p-2 text-white uppercase font-bold"
                                 value="Agregar Cliente"
+                                disabled
                             />
                         </form>
                     </div>
@@ -77,6 +79,6 @@
             </div>
         </main>
     </div>
-    <script src="./js/new-client.js"></script>
+    <script src="./js/app.js" type="module"></script>
 </body>
 </html>
