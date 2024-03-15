@@ -1,4 +1,5 @@
-import DB from './class-db.js';
+import Client from './class-client.js';
+
 class Validate_Form {
 
     form = null;
@@ -18,7 +19,7 @@ class Validate_Form {
     
     init() {
         this.form = document.getElementById('formulario');
-        this.inputs = this.form.querySelectorAll('input, textarea');
+        this.inputs = this.form.querySelectorAll('input, textarea'); //input:not([type=submit])
         this.send = this.form.querySelector('input[type="submit"]');
         // Listeners
         this.eventsListener();
@@ -100,15 +101,10 @@ class Validate_Form {
         if(error) parent.removeChild(error);
     }
 
-    /**
-     * Checks if the form is complete by looking for error messages.
-     *
-     * @return {boolean} true if the form is complete, false otherwise
-     */
     checkCompleteForm() {
         const errors = this.form.querySelectorAll('.error-message');
         const inputs = this.form.querySelectorAll('input, textarea');
-
+        
         // Check if there are errors
         if(errors.length > 0) return false;
 
@@ -120,11 +116,6 @@ class Validate_Form {
     }
 
     resetForm() {
-        // Remove notifications
-        const notifs = document.querySelectorAll('.error-message, .text-green');
-        if(notifs.length > 0) {
-           notifs.forEach(notif => notif.remove());
-        }
         // Reset form fields
         this.inputs.forEach(input => input.value = '');
         // Disable send button
@@ -138,36 +129,27 @@ class Validate_Form {
         if(!this.checkCompleteForm()) return;
         // create object
         const client = {};
-        client.id = Date.now();
         this.inputs.forEach(input => client[input.name] = input.value);
-        // Insert new client
-        this.insertNewClient(client);
+        // Add new client
+        if (client.action === 'Add') {
+            client.id = Date.now();
+            const newClient = new Client(client);
+            newClient.addClient();
+        } 
+        // Update client
+        if (client.action === 'Edit') {
+            client.id = Number(client.id);
+            console.log(client);
+            const editClient = new Client(client);
+            editClient.updateClient();
+        }
         // Hide after 3 seconds
         setTimeout(() => {
             // Show success message
             this.showAlert('The form has been sent successfully', this.form, 'success');
-        }, 3000);
-
-        setTimeout(() => this.resetForm(), 5000);
+            this.resetForm();
+        }, 1000);
     }
-
-    insertNewClient(client) {
-        const instanceDB = new DB();
-        const db = instanceDB.getDB();
-        // transaction
-        const transaction = db.transaction(['clients'], 'readwrite');
-        // object store
-        const objectStore = transaction.objectStore('clients');
-        // insert data
-        objectStore.add(client);
-        // Show error message
-        transaction.onerror = (e) => this.showAlert("An error has occurred: "+ e.target.error.message, this.form, 'error');
-        // Show success message
-        transaction.complete = () => this.showAlert('The form has been sent successfully', this.form, 'success');
-        // Redirect
-        setTimeout(() => window.location.href = 'index.html', 3000);
-    }
-
 }
 
 export default Validate_Form;

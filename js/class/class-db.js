@@ -20,12 +20,21 @@ class DB {
 
         this.DB.onupgradeneeded = function (e) {
             const db = e.target.result;
+            // CREAR LA TABLA "CLIENTES"
             const objectStore = db.createObjectStore('clients', { keyPath: 'id', autoIncrement: true });
-                objectStore.createIndex('id', 'id', { unique: true });
-                objectStore.createIndex('name', 'name', { unique: false });
-                objectStore.createIndex('email', 'email', { unique: true });
-                objectStore.createIndex('phone', 'phone', { unique: false });
-                objectStore.createIndex('company', 'company', { unique: false });
+            objectStore.createIndex('id', 'id', { unique: true });
+            objectStore.createIndex('name', 'name', { unique: false });
+            objectStore.createIndex('email', 'email', { unique: true });
+            objectStore.createIndex('phone', 'phone', { unique: false });
+            objectStore.createIndex('company', 'company', { unique: false });
+
+            // CREAR LA TABLA "PRODUCTOS"
+            const objectStore2 = db.createObjectStore('products', { keyPath: 'id', autoIncrement: true });
+            objectStore2.createIndex('code', 'code', { unique: true });
+            objectStore2.createIndex('name', 'name', { unique: false });
+            objectStore2.createIndex('brand', 'brand', { unique: false });
+            objectStore2.createIndex('company', 'company', { unique: false });
+            objectStore2.createIndex('id', 'id', { unique: true });
 
             console.log('Base de datos lista');
         };
